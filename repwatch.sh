@@ -4,7 +4,6 @@ MYSQLFILE1="--defaults-file=/root/.my.cnf.root"
 MYSQLFILE11="--defaults-file=/root/.my.cnf.root11"
 #wget -q -O /tmp/iv-DB1.txt http://MINT65.monster.co.in/iv.txt
 #wget -q -O /tmp/iv-DB2.txt http://MINT80.monster.co.in/iv.txt
-#wget -q -O /tmp/iv-DB3.txt http://MINT64.monster.co.in/iv.txt
 function Check_if_Active ()
 {
 DBName=$1
