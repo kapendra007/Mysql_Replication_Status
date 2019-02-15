@@ -1,22 +1,30 @@
 #!/bin/bash
+
+ctime=$(date +%F-%T)
+pwd_path=`dirname "$0"`
+script_path=$(echo "$pwd_path")
+
 MYSQLFILE="--defaults-file=/root/.my.cnf"
-MYSQLFILE1="--defaults-file=/root/.my.cnf.root"
-MYSQLFILE11="--defaults-file=/root/.my.cnf.root11"
-#wget -q -O /tmp/iv-DB1.txt http://MINT65.monster.co.in/iv.txt
 #wget -q -O /tmp/iv-DB2.txt http://MINT80.monster.co.in/iv.txt
+
+###################################
+
 function Check_if_Active ()
 {
 DBName=$1
 SRVName=$2
 case $DBName in
-	DB1)
-		FName='/tmp/iv-DB1.txt'
+	seeker)
+		FName='$script_path/db_details/seeker_slave.txt'
 	;;
-	DB2)
-		FName='/tmp/iv-DB2.txt'
+	sso)
+		FName='$script_path/db_details/sso_slave.txt'
 	;;
-	DB3)
-		FName='/tmp/iv-DB3.txt'
+	recruiter)
+		FName='$script_path/db_details/recruiter_slave.txt'
+        ;;
+        miscellaneous)
+                FName='$script_path/db_details/miscellaneous_slave.txt'
 	;;
 esac
 grep $SRVName $FName >> /dev/null
@@ -27,6 +35,9 @@ else
 	echo -n "  "
 fi
 }
+
+
+##########################################
 echo
 echo "############### Replication Status of All DB Cluster #############"
 echo 
@@ -34,17 +45,11 @@ date
 echo 
 echo -e "Slaves in seconds behind master Mintdb1 ( Mintdb1M ) \n"
 echo "------------------------------------------------------"
-Check_if_Active DB1 as01; mysql $MYSQLFILE -h 10.216.240.105 -e "show slave status\G" | grep Seconds_Behind_Master | awk '{print "Mintdb1as01\t\t\t"$2}'
-Check_if_Active DB1 as01; mysql $MYSQLFILE -h 10.216.240.105 -e "show slave status\G" | grep Seconds_Behind_Master | awk '{print "Mintdb1as01\t\t\t"$2}'
-Check_if_Active DB1 as02; mysql $MYSQLFILE -h 10.216.240.106 -e "show slave status\G" | grep Seconds_Behind_Master | awk '{print "Mintdb1as02\t\t\t"$2}'
-Check_if_Active DB1 as03; mysql $MYSQLFILE -h 10.216.240.113 -e "show slave status\G" | grep Seconds_Behind_Master | awk '{print "Mintdb1as03\t\t\t"$2}'
-Check_if_Active DB1 as04; mysql $MYSQLFILE -h 10.216.240.114 -e "show slave status\G" | grep Seconds_Behind_Master | awk '{print "Mintdb1as04\t\t\t"$2}'
-Check_if_Active DB1 ps01; mysql $MYSQLFILE -h 10.216.240.115 -e "show slave status\G" | grep Seconds_Behind_Master | awk '{print "Mintdb1ps01\t\t\t"$2}'
-Check_if_Active DB1 ps01; mysql $MYSQLFILE -h 10.216.240.122 -e "show slave status\G" | grep Seconds_Behind_Master | awk '{print "Mintdb1ps02\t\t\t"$2}'
+Check_if_Active seeker ; mysql $MYSQLFILE -h 10.216.240.105 -e "show slave status\G" | grep Seconds_Behind_Master | awk '{print "Mintdb1as01\t\t\t"$2}'
 #Check_if_Active DB1 sas; mysql $MYSQLFILE -h 10.216.240.182 -e "show slave status\G" | grep Seconds_Behind_Master | awk '{print "MINTdb1sas\t\t\t"$2}'
-mysql $MYSQLFILE1 -h DB1SL  -e "show slave status\G" | grep Seconds_Behind_Master | awk '{print "DB1SL(10.216.204.6)\t\t"$2}'
+#mysql $MYSQLFILE1 -h DB1SL  -e "show slave status\G" | grep Seconds_Behind_Master | awk '{print "DB1SL(10.216.204.6)\t\t"$2}'
 
-echo "------------------------------------------------------"
+echo "-----------------------------------------------------"
 echo -e "\n\nSlaves in seconds behind master Mintdb2 ( Mintdb2M ) \n"
 Check_if_Active DB2 as01; mysql $MYSQLFILE -h 10.216.240.124 -e "show slave status\G" | grep Seconds_Behind_Master | awk '{print "Mintdb2as01\t\t\t"$2}'
 Check_if_Active DB2 as02; mysql $MYSQLFILE -h 10.216.240.131 -e "show slave status\G" | grep Seconds_Behind_Master | awk '{print "Mintdb2as02\t\t\t"$2}'
